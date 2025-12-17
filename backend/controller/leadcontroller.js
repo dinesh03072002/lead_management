@@ -1,26 +1,26 @@
-const Lead = require("../model/leadmodel");
+const leadService = require("../service/leadservice");
 
-// ADD NEW LEAD
+// ADD LEAD
 exports.addLead = (req, res) => {
-  const data = req.body;
+  console.log("POST /api/leads/add HIT");
+  console.log("REQUEST BODY:", req.body);
 
-  // Auto-generate lead title
-  data.lead_title = `${data.client_name} - ${data.plant_capacity_kwp} kWp`;
-
-  Lead.createLead(data, (err, result) => {
+  leadService.createLead(req.body, (err) => {
     if (err) {
-      return res.status(500).json(err);
+      console.error("SERVICE ERROR:", err);
+      return res.status(400).json(err);
     }
-    res.json({ message: "Lead added successfully" });
+    res.status(200).json({ message: "Lead added successfully" });
   });
 };
 
-// GET ALL LEADS
+
+// GET LEADS
 exports.getLeads = (req, res) => {
-  Lead.getAllLeads((err, rows) => {
+  leadService.getLeads((err, results) => {
     if (err) {
-      return res.status(500).json(err);
+      return res.status(500).json({ message: "Failed to fetch leads" });
     }
-    res.json(rows);
+    res.json(results);
   });
 };

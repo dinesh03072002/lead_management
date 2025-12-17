@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controller/leadcontroller");
+const leadController = require("../controller/leadcontroller"); 
 
-router.post("/leads", controller.addLead);        // Add
-router.get("/leads", controller.getLeads);        // List
-
+router.post("/add", leadController.addLead);
+router.get("/", leadController.getLeads);
 
 module.exports = router;

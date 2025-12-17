@@ -52,14 +52,14 @@ export default function LeadsPage() {
                 <td className="p-3">{lead.client_position}</td>
                 <td className="p-3">{lead.project_type}</td>
                 <td className="p-3">{lead.plant_capacity_kwp || "-"}</td>
-                <td className="p-3">{lead.lead_assigned || "None"}</td>
+                <td className="p-3">{lead.lead_assigned_to || "None"}</td>
                 <td className="p-3">{lead.lead_reference}</td>
                 <td className="p-3">
                   <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">
-                    {lead.status || "NONE"}
+                    {lead.lead_status || "NONE"}
                   </span>
                 </td>
-                <td className="p-3">{lead.generated_by || "-"}</td>
+                <td className="p-3">{lead.lead_generated_by || "-"}</td>
                 <td className="p-3">{lead.lead_added?.slice(0, 10)}</td>
                 <td className="p-3">👁 ✏️</td>
               </tr>
