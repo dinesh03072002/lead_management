@@ -24,3 +24,23 @@ exports.getLeads = (req, res) => {
     res.json(results);
   });
 };
+
+// GET SINGLE LEAD
+exports.getLeadById = (req, res) => {
+  const { id } = req.params;
+
+  leadService.getLeadById(id, (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json(result[0]);
+  });
+};
+
+// UPDATE LEAD
+exports.updateLead = (req, res) => {
+  const { id } = req.params;
+
+  leadService.updateLead(id, req.body, (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Lead updated successfully" });
+  });
+};

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 
 const LEAD_TYPE = ["Marketing", "Sales"];
 const LEAD_STATUSES = ["Pending", "Completed"];
 const LEAD_SOURCE=["Social Media", "Website"];
 const LEAD_INDUSTRY=["IT", "Healthcare"];
 
-export default function AddLeadPage() {
+export default function EditLeadPage() {
+  const { id } = useParams();
   const router = useRouter();
 
   const [data, setData] = useState({
@@ -33,43 +34,51 @@ export default function AddLeadPage() {
     country: "India",
     location: "",
     description: "",
-    lead_generated_by: "Admin",
   });
 
+  
+  useEffect(() => {
+    if (!id) return;
+
+    fetch(`http://localhost:8000/api/leads/${id}`)
+      .then((res) => res.json())
+      .then((result) => setData(result))
+      .catch((err) => console.error("FETCH ERROR:", err));
+  }, [id]);
+
+  
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const submitLead = async (e) => {
+  
+  const updateLead = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      ...data,
-      plant_capacity_kwp: Number(data.plant_capacity_kwp),
-      lead_generated_by: "Admin",
-    };
-
     try {
-      const res = await fetch("http://localhost:8000/api/leads/add", {
-        method: "POST",
+      const res = await fetch(`http://localhost:8000/api/leads/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...data,
+          plant_capacity_kwp: Number(data.plant_capacity_kwp),
+        }),
       });
 
-      if (!res.ok) throw new Error("Failed to save lead");
+      if (!res.ok) throw new Error("Failed to update lead");
 
-      alert("Lead saved successfully");
+      alert("Lead updated successfully");
       router.push("/leads");
     } catch (error) {
-      alert("Failed to save lead");
+      alert("Failed to update lead");
     }
   };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-xl font-semibold mb-4">Add New Lead</h2>
+      <h2 className="text-xl font-semibold mb-4">Edit Lead</h2>
 
-      <form onSubmit={submitLead} className="bg-white p-6 rounded shadow space-y-6">
+      <form onSubmit={updateLead} className="bg-white p-6 rounded shadow space-y-6">
 
         
         <h3 className="font-semibold">Lead Information</h3>
@@ -77,7 +86,12 @@ export default function AddLeadPage() {
 
           <div>
             <label className="text-sm font-medium">Lead Type</label>
-            <select name="lead_type" value={data.lead_type} onChange={handleChange} className="border p-2 rounded w-full">
+            <select
+              name="lead_type"
+              value={data.lead_type}
+              onChange={handleChange}
+              className="border p-2 rounded w-full"
+            >
               <option value="">Select Lead Type</option>
               {LEAD_TYPE.map(type => (
                 <option key={type} value={type}>{type}</option>
@@ -87,7 +101,12 @@ export default function AddLeadPage() {
 
           <div>
             <label className="text-sm font-medium">Project Type</label>
-            <input className="border p-2 rounded w-full" name="project_type" value={data.project_type} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="project_type"
+              value={data.project_type}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
@@ -137,7 +156,12 @@ export default function AddLeadPage() {
 
           <div>
             <label className="text-sm font-medium">Lead Status</label>
-            <select name="lead_status" value={data.lead_status} onChange={handleChange} className="border p-2 rounded w-full">
+            <select
+              name="lead_status"
+              value={data.lead_status}
+              onChange={handleChange}
+              className="border p-2 rounded w-full"
+            >
               <option value="">Select Status</option>
               {LEAD_STATUSES.map(status => (
                 <option key={status} value={status}>{status}</option>
@@ -162,13 +186,13 @@ export default function AddLeadPage() {
               <option value="">Select Industry</option>
               {LEAD_INDUSTRY.map(industry => (
                 <option key={industry} value={industry}>{industry}</option> 
-              ))}
+              ))}  
               </select>
           </div>
 
         </div>
 
-        
+
         <h3 className="font-semibold">Address Information</h3>
         <div className="grid grid-cols-2 gap-4">
 
@@ -216,10 +240,10 @@ export default function AddLeadPage() {
           />
         </div>
 
-     
+        
         <div className="flex gap-4">
-          <button className="bg-black text-white px-6 py-2 rounded">
-            SAVE
+          <button className="bg-green-600 text-white px-6 py-2 rounded">
+            UPDATE
           </button>
           <button
             type="button"
