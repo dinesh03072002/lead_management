@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 
 const LEAD_TYPE = ["Marketing", "Sales"];
 const LEAD_STATUSES = ["Pending", "Completed"];
-const LEAD_SOURCE=["Social Media", "Website"];
-const LEAD_INDUSTRY=["IT", "Healthcare"];
+const LEAD_SOURCE = ["Social Media", "Website"];
+const LEAD_INDUSTRY = ["IT", "Healthcare"];
 
 export default function AddLeadPage() {
   const router = useRouter();
@@ -66,171 +66,297 @@ export default function AddLeadPage() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-xl font-semibold mb-4">Add New Lead</h2>
+    <div className="min-h-screen bg-gray-400 py-10">
+      <div className="max-w-6xl mx-auto px-6">
+        <h2 className="text-2xl font-bold mb-6">Add New Lead</h2>
 
-      <form onSubmit={submitLead} className="bg-white p-6 rounded shadow space-y-6">
-
-        
-        <h3 className="font-semibold">Lead Information</h3>
-        <div className="grid grid-cols-2 gap-4">
-
+        <form
+          onSubmit={submitLead}
+          className="bg-white rounded-xl shadow-lg p-8 space-y-8"
+        >
+          {/* Lead Information */}
           <div>
-            <label className="text-sm font-medium">Lead Type</label>
-            <select name="lead_type" value={data.lead_type} onChange={handleChange} className="border p-2 rounded w-full">
-              <option value="">Select Lead Type</option>
-              {LEAD_TYPE.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
+            <h3 className="text-lg font-semibold mb-4 border-b pb-2">
+              Lead Information
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label className="text-sm font-medium">Lead Type</label>
+                <select
+                  name="lead_type"
+                  value={data.lead_type}
+                  onChange={handleChange}
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  <option value="">Select Lead Type</option>
+                  {LEAD_TYPE.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Project Type</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="project_type"
+                  value={data.project_type}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Company</label>
+                <span className="text-red-500"> *</span>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="company"
+                  required
+                  value={data.company}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Client Name</label>
+                <span className="text-red-500"> *</span>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="client_name"
+                  required
+                  value={data.client_name}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Client Position</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="client_position"
+                  value={data.client_position}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Client Contact</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="client_contact"
+                  value={data.client_contact}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Email</label>
+                <span className="text-red-500"> *</span>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="email"
+                  required
+                  value={data.email}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Website</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="website"
+                  value={data.website}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Lead Reference</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="lead_reference"
+                  value={data.lead_reference}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">
+                  Plant Capacity (kWp)
+                </label>
+                <span className="text-red-500"> *</span>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="plant_capacity_kwp"
+                  required
+                  value={data.plant_capacity_kwp}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Lead Assigned To</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="lead_assigned_to"
+                  value={data.lead_assigned_to}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Lead Status</label>
+                <select
+                  name="lead_status"
+                  value={data.lead_status}
+                  onChange={handleChange}
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  <option value="">Select Status</option>
+                  {LEAD_STATUSES.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Source</label>
+                <select
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="source"
+                  value={data.source}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Source</option>
+                  {LEAD_SOURCE.map((source) => (
+                    <option key={source} value={source}>
+                      {source}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Industry</label>
+                <select
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="industry"
+                  value={data.industry}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Industry</option>
+                  {LEAD_INDUSTRY.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
 
+          {/* Address Information */}
           <div>
-            <label className="text-sm font-medium">Project Type</label>
-            <input className="border p-2 rounded w-full" name="project_type" value={data.project_type} onChange={handleChange} />
+            <h3 className="text-lg font-semibold mb-4 border-b pb-2">
+              Address Information
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="md:col-span-2">
+                <label className="text-sm font-medium">Address</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="address"
+                  value={data.address}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">City</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="city"
+                  value={data.city}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">State</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="state"
+                  value={data.state}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Pincode</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="pincode"
+                  value={data.pincode}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Country</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="country"
+                  value={data.country}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium">Location</label>
+                <input
+                  className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+                  name="location"
+                  value={data.location}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
           </div>
 
+          {/* Description */}
           <div>
-            <label className="text-sm font-medium">Company</label>
-            <input className="border p-2 rounded w-full" name="company" value={data.company} onChange={handleChange} />
+            <label className="text-sm font-medium">Description</label>
+            <textarea
+              className="mt-1 w-full rounded-lg border border-gray-300 p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+              name="description"
+              rows="4"
+              value={data.description}
+              onChange={handleChange}
+            />
           </div>
 
-          <div>
-            <label className="text-sm font-medium">Client Name</label>
-            <input className="border p-2 rounded w-full" name="client_name" value={data.client_name} onChange={handleChange} />
+          {/* Actions */}
+          <div className="flex justify-end gap-4 pt-4 border-t">
+            <button
+              type="button"
+              onClick={() => router.push("/leads")}
+              className="px-6 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow">
+              Save
+            </button>
           </div>
-
-          <div>
-            <label className="text-sm font-medium">Client Position</label>
-            <input className="border p-2 rounded w-full" name="client_position" value={data.client_position} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Client Contact</label>
-            <input className="border p-2 rounded w-full" name="client_contact" value={data.client_contact} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Email</label>
-            <input className="border p-2 rounded w-full" name="email" value={data.email} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Website</label>
-            <input className="border p-2 rounded w-full" name="website" value={data.website} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Lead Reference</label>
-            <input className="border p-2 rounded w-full" name="lead_reference" value={data.lead_reference} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Plant Capacity (kWp)</label>
-            <input className="border p-2 rounded w-full" name="plant_capacity_kwp" value={data.plant_capacity_kwp} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Lead Assigned To</label>
-            <input className="border p-2 rounded w-full" name="lead_assigned_to" value={data.lead_assigned_to} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Lead Status</label>
-            <select name="lead_status" value={data.lead_status} onChange={handleChange} className="border p-2 rounded w-full">
-              <option value="">Select Status</option>
-              {LEAD_STATUSES.map(status => (
-                <option key={status} value={status}>{status}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Source</label>
-            
-            <select className="border p-2 rounded w-full" name="source" value={data.source} onChange={handleChange}>
-              <option value="">Select Source</option>
-              {LEAD_SOURCE.map(source => (
-                <option key={source} value={source}>{source}</option>
-              ))}
-              </select>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Industry</label>
-            <select className="border p-2 rounded w-full" name="industry" value={data.industry} onChange={handleChange}>
-              <option value="">Select Industry</option>
-              {LEAD_INDUSTRY.map(industry => (
-                <option key={industry} value={industry}>{industry}</option> 
-              ))}
-              </select>
-          </div>
-
-        </div>
-
-        
-        <h3 className="font-semibold">Address Information</h3>
-        <div className="grid grid-cols-2 gap-4">
-
-          <div className="col-span-2">
-            <label className="text-sm font-medium">Address</label>
-            <input className="border p-2 rounded w-full" name="address" value={data.address} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">City</label>
-            <input className="border p-2 rounded w-full" name="city" value={data.city} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">State</label>
-            <input className="border p-2 rounded w-full" name="state" value={data.state} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Pincode</label>
-            <input className="border p-2 rounded w-full" name="pincode" value={data.pincode} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Country</label>
-            <input className="border p-2 rounded w-full" name="country" value={data.country} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Location</label>
-            <input className="border p-2 rounded w-full" name="location" value={data.location} onChange={handleChange} />
-          </div>
-
-        </div>
-
-        
-        <div>
-          <label className="text-sm font-medium">Description</label>
-          <textarea
-            className="border p-2 rounded w-full"
-            name="description"
-            rows="4"
-            value={data.description}
-            onChange={handleChange}
-          />
-        </div>
-
-     
-        <div className="flex gap-4">
-          <button className="bg-black text-white px-6 py-2 rounded">
-            SAVE
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push("/leads")}
-            className="bg-red-500 text-white px-6 py-2 rounded"
-          >
-            CANCEL
-          </button>
-        </div>
-
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

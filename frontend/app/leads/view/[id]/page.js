@@ -36,7 +36,7 @@ export default function ViewLeadPage() {
   );
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-500 min-h-screen">
       <h2 className="text-xl font-semibold mb-4">View Lead</h2>
 
       <div className="bg-white p-6 rounded shadow space-y-6">

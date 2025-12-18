@@ -75,7 +75,7 @@ export default function EditLeadPage() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-neutral-500 min-h-screen">
       <h2 className="text-xl font-semibold mb-4">Edit Lead</h2>
 
       <form onSubmit={updateLead} className="bg-white p-6 rounded shadow space-y-6">
@@ -111,12 +111,14 @@ export default function EditLeadPage() {
 
           <div>
             <label className="text-sm font-medium">Company</label>
-            <input className="border p-2 rounded w-full" name="company" value={data.company} onChange={handleChange} />
+            <span className="text-red-500"> *</span>
+            <input className="border p-2 rounded w-full" required name="company" value={data.company} onChange={handleChange} />
           </div>
 
           <div>
             <label className="text-sm font-medium">Client Name</label>
-            <input className="border p-2 rounded w-full" name="client_name" value={data.client_name} onChange={handleChange} />
+            <span className="text-red-500"> *</span>
+            <input className="border p-2 rounded w-full" required name="client_name" value={data.client_name} onChange={handleChange} />
           </div>
 
           <div>
@@ -131,7 +133,8 @@ export default function EditLeadPage() {
 
           <div>
             <label className="text-sm font-medium">Email</label>
-            <input className="border p-2 rounded w-full" name="email" value={data.email} onChange={handleChange} />
+            <span className="text-red-500"> *</span>
+            <input className="border p-2 rounded w-full" required name="email" value={data.email} onChange={handleChange} />
           </div>
 
           <div>
@@ -146,7 +149,8 @@ export default function EditLeadPage() {
 
           <div>
             <label className="text-sm font-medium">Plant Capacity (kWp)</label>
-            <input className="border p-2 rounded w-full" name="plant_capacity_kwp" value={data.plant_capacity_kwp} onChange={handleChange} />
+            <span className="text-red-500"> *</span>
+            <input className="border p-2 rounded w-full" required name="plant_capacity_kwp" value={data.plant_capacity_kwp} onChange={handleChange} />
           </div>
 
           <div>
