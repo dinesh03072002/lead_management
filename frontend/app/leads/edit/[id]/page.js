@@ -5,16 +5,18 @@ import { useParams, useRouter } from "next/navigation";
 
 const LEAD_TYPE = ["Marketing", "Sales"];
 const LEAD_STATUSES = ["Pending", "Completed"];
-const LEAD_SOURCE=["Social Media", "Website"];
-const LEAD_INDUSTRY=["IT", "Healthcare"];
+const LEAD_SOURCE = ["Social Media", "Website"];
+const LEAD_INDUSTRY = ["IT", "Healthcare"];
 
 export default function EditLeadPage() {
   const { id } = useParams();
   const router = useRouter();
 
+  const [projectTypes, setProjectTypes] = useState([]);
+
   const [data, setData] = useState({
     lead_type: "",
-    project_type: "",
+    project_type_id: "",
     company: "",
     client_name: "",
     client_position: "",
@@ -33,25 +35,36 @@ export default function EditLeadPage() {
     pincode: "",
     country: "India",
     location: "",
-    description: "",
+    description: ""
   });
 
-  
+  // 🔹 Fetch project types
+  useEffect(() => {
+    fetch("http://localhost:8000/api/project-types")
+      .then(res => res.json())
+      .then(data => setProjectTypes(data))
+      .catch(err => console.error("Project type fetch error:", err));
+  }, []);
+
+  // 🔹 Fetch lead data
   useEffect(() => {
     if (!id) return;
 
     fetch(`http://localhost:8000/api/leads/${id}`)
-      .then((res) => res.json())
-      .then((result) => setData(result))
-      .catch((err) => console.error("FETCH ERROR:", err));
+      .then(res => res.json())
+      .then(result => {
+        setData({
+          ...result,
+          project_type_id: result.project_type_id || ""
+        });
+      })
+      .catch(err => console.error("FETCH ERROR:", err));
   }, [id]);
 
-  
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  
   const updateLead = async (e) => {
     e.preventDefault();
 
@@ -61,15 +74,16 @@ export default function EditLeadPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
-          plant_capacity_kwp: Number(data.plant_capacity_kwp),
-        }),
+          project_type_id: Number(data.project_type_id),
+          plant_capacity_kwp: Number(data.plant_capacity_kwp)
+        })
       });
 
-      if (!res.ok) throw new Error("Failed to update lead");
+      if (!res.ok) throw new Error();
 
       alert("Lead updated successfully");
       router.push("/leads");
-    } catch (error) {
+    } catch {
       alert("Failed to update lead");
     }
   };
@@ -80,10 +94,11 @@ export default function EditLeadPage() {
 
       <form onSubmit={updateLead} className="bg-white p-6 rounded shadow space-y-6">
 
-        
+        {/* Lead Information */}
         <h3 className="font-semibold">Lead Information</h3>
-        <div className="grid grid-cols-2 gap-4">
 
+        <div className="grid grid-cols-2 gap-4">
+          {/* Lead Type */}
           <div>
             <label className="text-sm font-medium">Lead Type</label>
             <select
@@ -99,65 +114,131 @@ export default function EditLeadPage() {
             </select>
           </div>
 
+          {/* ✅ Project Type Dropdown */}
           <div>
-            <label className="text-sm font-medium">Project Type</label>
+            <label className="text-sm font-medium">
+              Project Type <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="project_type_id"
+              value={data.project_type_id}
+              onChange={handleChange}
+              required
+              className="border p-2 rounded w-full"
+            >
+              <option value="">Select Project Type</option>
+              {projectTypes.map(pt => (
+                <option key={pt.id} value={pt.id}>
+                  {pt.project_type_name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Company */}
+          <div>
+            <label className="text-sm font-medium">Company *</label>
             <input
               className="border p-2 rounded w-full"
-              name="project_type"
-              value={data.project_type}
+              name="company"
+              required
+              value={data.company}
               onChange={handleChange}
             />
           </div>
 
+          {/* Client Name */}
           <div>
-            <label className="text-sm font-medium">Company</label>
-            <span className="text-red-500"> *</span>
-            <input className="border p-2 rounded w-full" required name="company" value={data.company} onChange={handleChange} />
+            <label className="text-sm font-medium">Client Name *</label>
+            <input
+              className="border p-2 rounded w-full"
+              name="client_name"
+              required
+              value={data.client_name}
+              onChange={handleChange}
+            />
           </div>
 
-          <div>
-            <label className="text-sm font-medium">Client Name</label>
-            <span className="text-red-500"> *</span>
-            <input className="border p-2 rounded w-full" required name="client_name" value={data.client_name} onChange={handleChange} />
-          </div>
-
+          {/* Client Position */}
           <div>
             <label className="text-sm font-medium">Client Position</label>
-            <input className="border p-2 rounded w-full" name="client_position" value={data.client_position} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="client_position"
+              value={data.client_position}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Client Contact */}
           <div>
             <label className="text-sm font-medium">Client Contact</label>
-            <input className="border p-2 rounded w-full" name="client_contact" value={data.client_contact} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="client_contact"
+              value={data.client_contact}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Email */}
           <div>
-            <label className="text-sm font-medium">Email</label>
-            <span className="text-red-500"> *</span>
-            <input className="border p-2 rounded w-full" required name="email" value={data.email} onChange={handleChange} />
+            <label className="text-sm font-medium">Email *</label>
+            <input
+              className="border p-2 rounded w-full"
+              name="email"
+              required
+              value={data.email}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Website */}
           <div>
             <label className="text-sm font-medium">Website</label>
-            <input className="border p-2 rounded w-full" name="website" value={data.website} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="website"
+              value={data.website}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Lead Reference */}
           <div>
             <label className="text-sm font-medium">Lead Reference</label>
-            <input className="border p-2 rounded w-full" name="lead_reference" value={data.lead_reference} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="lead_reference"
+              value={data.lead_reference}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Plant Capacity */}
           <div>
-            <label className="text-sm font-medium">Plant Capacity (kWp)</label>
-            <span className="text-red-500"> *</span>
-            <input className="border p-2 rounded w-full" required name="plant_capacity_kwp" value={data.plant_capacity_kwp} onChange={handleChange} />
+            <label className="text-sm font-medium">Plant Capacity (kWp) *</label>
+            <input
+              className="border p-2 rounded w-full"
+              name="plant_capacity_kwp"
+              required
+              value={data.plant_capacity_kwp}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Lead Assigned To */}
           <div>
             <label className="text-sm font-medium">Lead Assigned To</label>
-            <input className="border p-2 rounded w-full" name="lead_assigned_to" value={data.lead_assigned_to} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="lead_assigned_to"
+              value={data.lead_assigned_to}
+              onChange={handleChange}
+            />
           </div>
 
+          {/* Lead Status */}
           <div>
             <label className="text-sm font-medium">Lead Status</label>
             <select
@@ -173,66 +254,105 @@ export default function EditLeadPage() {
             </select>
           </div>
 
+          {/* Source Dropdown */}
           <div>
             <label className="text-sm font-medium">Source</label>
-            
-            <select className="border p-2 rounded w-full" name="source" value={data.source} onChange={handleChange}>
+            <select
+              className="border p-2 rounded w-full"
+              name="source"
+              value={data.source}
+              onChange={handleChange}
+            >
               <option value="">Select Source</option>
-              {LEAD_SOURCE.map(source => (
-                <option key={source} value={source}>{source}</option>
+              {LEAD_SOURCE.map(src => (
+                <option key={src} value={src}>{src}</option>
               ))}
-              </select>
+            </select>
           </div>
 
+          {/* Industry Dropdown */}
           <div>
             <label className="text-sm font-medium">Industry</label>
-            <select className="border p-2 rounded w-full" name="industry" value={data.industry} onChange={handleChange}>
+            <select
+              className="border p-2 rounded w-full"
+              name="industry"
+              value={data.industry}
+              onChange={handleChange}
+            >
               <option value="">Select Industry</option>
-              {LEAD_INDUSTRY.map(industry => (
-                <option key={industry} value={industry}>{industry}</option> 
-              ))}  
-              </select>
+              {LEAD_INDUSTRY.map(ind => (
+                <option key={ind} value={ind}>{ind}</option>
+              ))}
+            </select>
           </div>
-
         </div>
 
-
+        {/* Address */}
         <h3 className="font-semibold">Address Information</h3>
-        <div className="grid grid-cols-2 gap-4">
 
+        <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
             <label className="text-sm font-medium">Address</label>
-            <input className="border p-2 rounded w-full" name="address" value={data.address} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="address"
+              value={data.address}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
             <label className="text-sm font-medium">City</label>
-            <input className="border p-2 rounded w-full" name="city" value={data.city} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="city"
+              value={data.city}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
             <label className="text-sm font-medium">State</label>
-            <input className="border p-2 rounded w-full" name="state" value={data.state} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="state"
+              value={data.state}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
             <label className="text-sm font-medium">Pincode</label>
-            <input className="border p-2 rounded w-full" name="pincode" value={data.pincode} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="pincode"
+              value={data.pincode}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
             <label className="text-sm font-medium">Country</label>
-            <input className="border p-2 rounded w-full" name="country" value={data.country} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="country"
+              value={data.country}
+              onChange={handleChange}
+            />
           </div>
 
           <div>
             <label className="text-sm font-medium">Location</label>
-            <input className="border p-2 rounded w-full" name="location" value={data.location} onChange={handleChange} />
+            <input
+              className="border p-2 rounded w-full"
+              name="location"
+              value={data.location}
+              onChange={handleChange}
+            />
           </div>
-
         </div>
 
-        
+        {/* Description */}
         <div>
           <label className="text-sm font-medium">Description</label>
           <textarea
@@ -244,7 +364,7 @@ export default function EditLeadPage() {
           />
         </div>
 
-        
+        {/* Actions */}
         <div className="flex gap-4">
           <button className="bg-green-600 text-white px-6 py-2 rounded">
             UPDATE
